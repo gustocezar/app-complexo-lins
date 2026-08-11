@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Observatório do Complexo do Lins - 10 Visões e Abas Integradas</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon" style="background: linear-gradient(135deg, #ef4444, #f97316);">LIVE</div>
+      <div class="brand-text">
+        <h1>Complexo do Lins · Observatório de Dados Abertos & Painel Integrado</h1>
+        <p>10 Visões Interativas: Tempo Real, GIS, Predição, Séries Históricas, Clusters, Saúde, Educação, Segurança & Memória</p>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-primary" id="btn-manual-refresh" style="background: var(--accent-orange); border-color: var(--accent-orange);">
+        🔄 Atualizar APIs Agora
+      </button>
+      <button class="btn btn-primary" id="btn-export-csv">
+        ⬇️ Exportar CSV
+      </button>
+    </div>
+  </nav>
+
+  <!-- App Layout Container -->
+  <div class="app-container">
+    
+    <!-- Hero Summary Header -->
+    <section class="hero-card">
+      <div class="hero-header">
+        <h2>Plataforma Integrada de Inteligência Urbana & Monitoramento Socioambiental</h2>
+        <p>
+          Consulte todas as <strong>10 visões analíticas e operacionais</strong> construídas sobre as 12 comunidades do Complexo do Lins.
+        </p>
+      </div>
+
+      <!-- Navigation Tabs (TODAS AS 10 VISÕES REUNIDAS) -->
+      <div class="tabs-nav">
+        <button class="tab-btn active" data-tab="tab-live-day">🔴 1. Painel do Dia (10min) & 24h</button>
+        <button class="tab-btn" data-tab="tab-geral">🗺️ 2. Mapa GIS, CEP & GPS</button>
+        <button class="tab-btn" data-tab="tab-operacional">🚦 3. Sala de Situação (7/15/30d)</button>
+        <button class="tab-btn" data-tab="tab-preditivo">🔮 4. Simulador Preditivo RainRisk</button>
+        <button class="tab-btn" data-tab="tab-historico">📜 5. Séries Históricas (2000-2024)</button>
+        <button class="tab-btn" data-tab="tab-clusters">🤖 6. Clusters K-Means & Pearson</button>
+        <button class="tab-btn" data-tab="tab-saude">🏥 7. Epidemiologia (Dengue/COVID)</button>
+        <button class="tab-btn" data-tab="tab-educacao">👶 8. Educação & Creches</button>
+        <button class="tab-btn" data-tab="tab-seguranca">👮 9. Segurança & Fogo Cruzado</button>
+        <button class="tab-btn" data-tab="tab-comunidade">📚 10. Memória & Mobilidade OSM</button>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- ABA 1: PAINEL DO DIA EM TEMPO REAL (10MIN) COM VALIDAÇÃO & 24H -->
+    <!-- =================================================================== -->
+    <div class="tab-content active" id="tab-live-day">
+      <div class="hero-card" style="background: rgba(15, 23, 42, 0.95); border: 2px solid var(--accent-orange);">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+          <div>
+            <span class="metric-badge badge-green" id="cor-estagio-badge" style="font-size: 1rem; padding: 6px 14px;">
+              🟢 ESTÁGIO 1 - NORMAL (COR-RIO)
+            </span>
+            <p style="color:#94a3b8; font-size:0.85rem; margin-top:0.5rem;" id="cor-estagio-desc">
+              Sem ocorrências de grande impacto na infraestrutura ou mobilidade no Lins de Vasconcelos.
+            </p>
+          </div>
+
+          <div style="text-align: right;">
+            <span style="font-size: 0.85rem; color: #cbd5e1; display: block;">⏱️ Próxima Atualização Automática:</span>
+            <strong style="color: var(--primary); font-size: 1.4rem;" id="timer-countdown">09:59</strong>
+            <span style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;" id="last-update-time">Última leitura: Carregando...</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card" style="border-color: var(--accent-green);">
+          <span class="metric-title">Resolutividade 1746 (Lins)</span>
+          <span class="metric-value" style="color: var(--accent-green);">84.9%</span>
+          <span class="metric-badge badge-green">1.460 / 1.720 Atendidos</span>
+        </div>
+
+        <div class="metric-card" style="border-color: var(--accent-orange);">
+          <span class="metric-title">Pendente / SLA Estourado</span>
+          <span class="metric-value" style="color: var(--accent-orange);">15.1%</span>
+          <span class="metric-badge badge-orange">260 Chamados Atrasados</span>
+        </div>
+
+        <div class="metric-card" style="border-color: var(--primary);">
+          <span class="metric-title">Precisão Preditiva de Alertas</span>
+          <span class="metric-value" style="color: var(--primary);">81.3%</span>
+          <span class="metric-badge badge-blue">39 / 48 Confirmados</span>
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-title">Alarmes Falsos-Positivos</span>
+          <span class="metric-value">18.7%</span>
+          <span class="metric-badge badge-orange">9 Alertas sem Chuva Forte</span>
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-title">🌡️ Temperatura Atual</span>
+          <span class="metric-value" id="live-temp">24.5 °C</span>
+          <span class="metric-badge badge-blue" id="live-weather-desc">Open-Meteo Live API</span>
+        </div>
+      </div>
+
+      <!-- Timeline 24h -->
+      <section class="data-table-card" style="margin-bottom: 1.5rem; border-color: rgba(56, 189, 248, 0.3);">
+        <div class="card-header" style="padding: 0 0 1rem 0; background: transparent; display: flex; justify-content: space-between; align-items: center;">
+          <h3 class="card-title" style="color: var(--primary);">📜 Linha do Tempo: Histórico de Alertas e Ocorrências nas Últimas 24 Horas</h3>
+          <span class="metric-badge badge-green">Monitoramento Auditável</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0.85rem;" id="container-historico-24h"></div>
+      </section>
+
+      <!-- Feeds ao vivo -->
+      <section class="charts-grid">
+        <div class="chart-card">
+          <div class="card-header" style="padding: 0; background: transparent; border: none;">
+            <h3 class="card-title">📡 Feed de Alertas ao Vivo (Alerta Rio / COR-Rio)</h3>
+          </div>
+          <div id="live-feed-alerts" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;"></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header" style="padding: 0; background: transparent; border: none;">
+            <h3 class="card-title">📞 Chamados 1746 Registrados Hoje</h3>
+          </div>
+          <div id="live-feed-1746" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- ABA 2: MAPA GIS, BUSCA POR CEP & CAPTURA DE GPS -->
+    <!-- =================================================================== -->
+    <div class="tab-content" id="tab-geral">
+      <div class="hero-card" style="background: rgba(15, 23, 42, 0.95); border: 1px solid var(--primary); padding: 1rem; margin-bottom: 1.25rem;">
+        <h3 class="card-title" style="font-size: 1.05rem; margin-bottom: 0.75rem;">📍 Localizador Geográfico: Buscar por CEP ou Capturar GPS do Celular/PC</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; align-items: center;">
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" id="input-cep-search" class="search-input" placeholder="📮 Digite o CEP (ex: 20720-000 ou Rua Cabuçu)..." style="margin:0; flex:1;" />
+            <button class="btn btn-primary" id="btn-cep-search" style="padding: 0.6rem 1rem; white-space: nowrap;">
+              🔍 Buscar CEP
+            </button>
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <button class="btn" id="btn-gps-locate" style="background: #10b981; color: #fff; border: none; padding: 0.6rem 1.2rem; font-weight: 700; width: 100%;">
+              📡 Usar Meu GPS Atual
+            </button>
+          </div>
+        </div>
+        <div id="location-result-banner" style="display: none; margin-top: 0.75rem; padding: 0.75rem; border-radius: 8px; font-size: 0.85rem;"></div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-title">🪨 Blocos Rochosos (Risco)</span>
+          <span class="metric-value">8</span>
+          <span class="metric-badge badge-red">Geo-Rio / CPRM</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-title">🌊 Trechos de Inundação</span>
+          <span class="metric-value">6</span>
+          <span class="metric-badge badge-orange">Rio-Águas / Alerta Rio</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-title">🕳️ Bueiros Críticos (1746)</span>
+          <span class="metric-value">14</span>
+          <span class="metric-badge badge-blue">Reclamações do 1746</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-title">🗑️ Ecopontos Comlurb</span>
+          <span class="metric-value">12</span>
+          <span class="metric-badge badge-green">Caçambas & Lixeiras</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-title">População Censo 2022</span>
+          <span class="metric-value">34.850</span>
+          <span class="metric-badge badge-blue">12 Comunidades</span>
+        </div>
+      </div>
+
+      <section class="dashboard-grid">
+        <div class="map-card">
+          <div class="card-header">
+            <h3 class="card-title">🗺️ Mapeamento GIS Georreferenciado por Pontos & Camadas</h3>
+            <span class="metric-badge badge-green">Use a busca por CEP ou botão GPS acima</span>
+          </div>
+          <div id="map"></div>
+        </div>
+
+        <aside class="sidebar-panel">
+          <div class="community-list-card">
+            <div class="card-header" style="padding: 0; background: transparent; border: none;">
+              <h3 class="card-title">🏘️ Comunidades & Riscos (12)</h3>
+            </div>
+            <input type="text" class="search-input" id="search-community" placeholder="🔍 Buscar morro, pedra, bueiro ou rua..." />
+            <div class="community-scroll" id="community-list"></div>
+          </div>
+        </aside>
+      </section>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- ABA 3: SALA DE SITUAÇÃO OPERACIONAL (7 / 15 / 30 DIAS) -->
+    <!-- =================================================================== -->
+    <div class="tab-content" id="tab-operacional">
+      <div class="hero-card" style="background: rgba(15, 23, 42, 0.95); border-color: var(--primary);">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 class="card-title">🗓️ HORIZONTE 1: Semana Corrente (Próximos 7 Dias)</h3>
+          <span class="metric-badge badge-orange" id="op-status-7d">⚡ Atenção (Frente Fria em Aproximação)</span>
+        </div>
+        <p style="color:#94a3b8; font-size:0.9rem; margin-top:0.4rem;">
+          Chuva acumulada prevista na semana: <strong style="color:#38bdf8;">48 mm</strong> · Previsão de chamados 1746: <strong>42 solicitações</strong>
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; margin-top: 1rem;" id="grid-previsao-7d"></div>
+        <div style="margin-top: 1.25rem; background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px;">
+          <strong style="color: #cbd5e1; font-size: 0.85rem; text-transform: uppercase;">Ações Imediatas em Execução na Semana:</strong>
+          <ul id="lista-acoes-7d" style="margin-top: 0.4rem; padding-left: 1.2rem; color: #94a3b8; font-size: 0.9rem;"></ul>
+        </div>
+      </div>
+
+      <div class="charts-grid" style="margin-top: 1.25rem;">
+        <div class="chart-card">
+          <h3 class="card-title" style="color: var(--primary);">🗓️ HORIZONTE 2: Planejamento (Próximos 15 Dias)</h3>
+          <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.4rem;">Previsão de Chamados 1746: <strong>95 solicitações</strong></p>
+          <ul id="lista-acoes-15d" style="margin-top: 0.75rem; padding-left: 1.2rem; color: #cbd5e1; font-size: 0.9rem;"></ul>
+        </div>
+
+        <div class="chart-card">
+          <h3 class="card-title" style="color: var(--accent-green);">🗓️ HORIZONTE 3: Obras & Metas (Próximos 30 Dias)</h3>
+          <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.4rem;">Previsão de Chamados 1746: <strong>180 solicitações</strong></p>
+          <ul id="lista-acoes-30d" style="margin-top: 0.75rem; padding-left: 1.2rem; color: #cbd5e1; font-size: 0.9rem;"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- ABA 4: SIMULADOR PREDITIVO METEOROLÓGICO (RAINRISK) -->
+    <!-- =================================================================== -->
+    <div class="tab-content" id="tab-preditivo">
+      <div class="hero-card" style="background: rgba(15, 23, 42, 0.9); border-color: var(--primary);">
+        <h3 class="card-title">⚙️ Controles do Simulador Preditivo RainRisk</h3>
+        <p style="color:#94a3b8; font-size:0.85rem; margin-top:0.25rem;">
+          Ajuste os sliders de chuva horária e acumulado de 24h para prever em tempo real a demanda da Central 1746 e o nível de emergência.
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+          <div>
+            <label style="display:flex; justify-content:space-between; font-weight:600; font-size:0.9rem; margin-bottom:0.4rem;">
+              <span>🌧️ Intensidade da Chuva Prevista (mm/h):</span>
+              <span id="slider-rain-val" style="color: var(--primary); font-size:1.1rem; font-weight:800;">25 mm/h</span>
+            </label>
+            <input type="range" id="slider-rain" min="0" max="120" value="25" step="5" style="width:100%; cursor:pointer;" />
+          </div>
+
+          <div>
+            <label style="display:flex; justify-content:space-between; font-weight:600; font-size:0.9rem; margin-bottom:0.4rem;">
+              <span>📊 Acumulado de Chuva nas Últimas 24h (mm):</span>
+              <span id="slider-accumulated-val" style="color: var(--accent-orange); font-size:1.1rem; font-weight:800;">45 mm</span>
+            </label>
+            <input type="range" id="slider-accumulated" min="0" max="200" value="45" step="5" style="width:100%; cursor:pointer;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Panel of Simulation -->
+      <div class="metrics-grid" style="margin-top: 1.25rem;">
+        <div class="metric-card" style="border-color: var(--accent-red);">
+          <span class="metric-title">Nível de Emergência Estimado</span>
+          <span class="metric-value" id="pred-nivel-status" style="font-size: 1.2rem; color: #fb923c;">⚠️ ALERTA GEOTÉCNICO</span>
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-title">Total Chamados 1746 Previstos</span>
+          <span class="metric-value" id="pred-total-chamados">34</span>
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-title">🌊 Alagamento de Vias</span>
+          <span class="metric-value" id="pred-alagamento-chamados">18</span>
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-title">🪨 Escorregamento de Encosta</span>
+          <span class="metric-value" id="pred-deslizamento-chamados">6</span>
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-title">🕳️ Desobstrução de Bueiros</span>
+          <span class="metric-value" id="pred-bueiros-chamados">10</span>
+        </div>
+      </div>
+
+      <!-- Dynamic Predictions Lists -->
+      <div class="charts-grid" style="margin-top: 1.25rem;">
+        <div class="chart-card">
+          <h3 class="card-title">🌊 Vias com Risco Crítico de Inundação na Simulação</h3>
+          <div id="pred-lista-vias" style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.75rem;"></div>
+        </div>
+
+        <div class="chart-card">
+          <h3 class="card-title">🪨 Encostas com Risco de Deslizamento na Simulação</h3>
+          <div id="pred-lista-encostas" style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.75rem;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- ABA 5: SÉRIES HISTÓRICAS (2000-2024) -->
+    <!-- =================================================================== -->
+    <div class="tab-content" id="tab-historico">
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="card-header" style="padding: 0; background: transparent; border: none;">
+            <h3 class="card-title">📈 Evolução Censitária: População e Domicílios (Censos IBGE 2000, 2010, 2022)</h3>
+          </div>
+          <div class="chart-container">
+            <canvas id="chart-historico-censo"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header" style="padding: 0; background: transparent; border: none;">
+            <h3 class="card-title">🦟 Curva Histórica de Incidência de Dengue (/100k hab)</h3>
+          </div>
+          <div class="chart-container">
+            <canvas id="chart-historico-dengue"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Histórico de Tempestades Extremas -->
+      <section class="data-table-card" style="margin-top: 1.5rem;">
+        <div class="card-header" style="padding: 0 0 1rem 0; background: transparent;">
+          <h3 class="card-title">⛈️ Tabela Histórica de Temporais Extremos no Lins (2010 - 2024)</h3>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Evento Meteorológico</th>
+                <th>Data</th>
+                <th>Chuva 24h (mm)</th>
+                <th>Chamados Deslizamento</th>
+                <th>Impacto Urbano</th>
+                <th>Fonte</th>
+              </tr>
+            </thead>
+            <tbody id="historico-chuva-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- ABA 6: CLUSTERS K-MEANS & MATRIZ DE PEARSON -->
+    <!-- =================================================================== -->
+    <div class="tab-content" id="tab-clusters">
+      <div class="card-header" style="padding:0; background:transparent; margin-bottom:1rem;">
+        <h3 class="card-title">🤖 Agrupamentos Socioespaciais K-Means ($k=3$) com Nomenclaturas Descritivas</h3>
+        <p style="color:#94a3b8; font-size:0.85rem;">Conheça o significado socioambiental e geotécnico de cada grupo no Lins.</p>
+      </div>
+
+      <div class="clusters-grid" id="clusters-container"></div>
+
+      <!-- Pearson Table & Scatter Plots -->
+      <section class="data-table-card" style="margin-top: 1.5rem;">
+        <div class="card-header" style="padding: 0 0 1rem 0; background: transparent;">
+          <h3 class="card-title">📊 Matriz de Correlação Linear de Pearson ($r$)</h3>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Par de Variáveis Analisadas</th>
+                <th>Coeficiente Pearson ($r$)</th>
+                <th>Significância Estatística</th>
+                <th>Interpretação Prática</th>
+              </tr>
+            </thead>
+            <tbody id="pearson-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="charts-grid" style="margin-top: 1.5rem;">
+        <div class="chart-card">
+          <h3 class="card-title">Scatter Plot: Renda Média Domiciliar vs. Score IVM</h3>
+          <div class="chart-container"><canvas id="chart-scatter-renda-ivm"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <h3 class="card-title">Scatter Plot: Escolaridade vs. Incidência de Dengue</h3>
+          <div class="chart-container"><canvas id="chart-scatter-educ-dengue"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- ABA 7: EPIDEMIOLOGIA (DENGUE, COVID & SRAG) -->
+    <!-- =================================================================== -->
+    <div class="tab-content" id="tab-saude">
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3 class="card-title">🦟 Incidência de Dengue por 100 mil Habitantes (Comunidades)</h3>
+          <div class="chart-container"><canvas id="chart-dengue"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <h3 class="card-title">🦠 COVID-19 vs. Internações por Síndrome Respiratória Aguda (SRAG)</h3>
+          <div class="chart-container"><canvas id="chart-covid-srag"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- ABA 8: EDUCAÇÃO & VAGAS EM CRECHES -->
+    <!-- =================================================================== -->
+    <div class="tab-content" id="tab-educacao">
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3 class="card-title">👶 Vagas em Creches Atendidas vs. Demanda Reprimida</h3>
+          <div class="chart-container"><canvas id="chart-creches"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <h3 class="card-title">🎓 Nível de Escolaridade da População (Sem Fundamental vs. Médio Completo)</h3>
+          <div class="chart-container"><canvas id="chart-escolaridade"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- ABA 9: SEGURANÇA PÚBLICA & FOGO CRUZADO -->
+    <!-- =================================================================== -->
+    <div class="tab-content" id="tab-seguranca">
+      <div class="metrics-grid">
+        <div class="metric-card" style="border-color: var(--accent-red);">
+          <span class="metric-title">Circunscrição Policial</span>
+          <span class="metric-value" style="font-size: 1.1rem; color: #f87171;">25ª DP (Engenho Novo)</span>
+          <span class="metric-badge badge-red">Fonte: ISP-RJ</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-title">Homicídios Dolosos / Ano</span>
+          <span class="metric-value">8</span>
+          <span class="metric-badge badge-red">Taxa 22.9 / 100k</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-title">Roubos de Veículo / Ano</span>
+          <span class="metric-value">84</span>
+          <span class="metric-badge badge-orange">Corredor R. Lins</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-title">Alertas Fogo Cruzado / Ano</span>
+          <span class="metric-value">34</span>
+          <span class="metric-badge badge-red">Disparos Georreferenciados</span>
+        </div>
+      </div>
+
+      <div class="chart-card" style="margin-top: 1.25rem;">
+        <h3 class="card-title" style="color: #f87171;">🎯 Notificações de Tiroteios Registradas (Instituto Fogo Cruzado)</h3>
+        <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.4rem;">
+          Eventos de tiros e operações policiais georreferenciados com impacto direto no fechamento de escolas e postos de saúde.
+        </p>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- ABA 10: MEMÓRIA COMUNITÁRIA & MOBILIDADE OSM -->
+    <!-- =================================================================== -->
+    <div class="tab-content" id="tab-comunidade">
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3 class="card-title" style="color: #a78bfa;">📚 Acervo Comunitário & Projetos (Wikifavelas / Fiocruz)</h3>
+          <div style="margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.6rem;">
+            <div style="background: rgba(15,23,42,0.6); padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(167, 139, 250, 0.3);">
+              <strong style="color: #a78bfa;">📚 Pré-Vestibular Comunitário do Lins</strong>
+              <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 2px;">Morro da Cachoeira Grande · Aulas populares preparatórias para ENEM e UERJ.</p>
+            </div>
+            <div style="background: rgba(15,23,42,0.6); padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(167, 139, 250, 0.3);">
+              <strong style="color: #a78bfa;">🌱 Horta Comunitária do Morro do Cotia</strong>
+              <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 2px;">Morro do Cotia · Agroecologia e segurança alimentar para famílias vulneráveis.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3 class="card-title" style="color: #f59e0b;">🏍️ Geometria Colaborativa & Mobilidade (OpenStreetMap / Mapillary)</h3>
+          <div style="margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.6rem;">
+            <div style="background: rgba(15,23,42,0.6); padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.3);">
+              <strong style="color: #f59e0b;">🏍️ Ponto de Mototáxi Cabuçu</strong>
+              <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 2px;">Rua Cabuçu x R. Lins de Vasconcelos · Principal meio de transporte para morros do Cluster 1.</p>
+            </div>
+            <div style="background: rgba(15,23,42,0.6); padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.3);">
+              <strong style="color: #f59e0b;">🪜 Escadaria Principal da Cotieira</strong>
+              <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 2px;">Acesso pedonal mapeado no OSM com 180 degraus.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Master Open Data Table -->
+    <section class="data-table-card" style="margin-top: 1.5rem;">
+      <div class="card-header" style="padding: 0 0 1.25rem 0; background: transparent;">
+        <h3 class="card-title">📋 Tabela Consolidada de Indicadores Multidimensionais e Clusters</h3>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Comunidade</th>
+              <th>Grupo Socioespacial</th>
+              <th>Score IVM</th>
+              <th>População</th>
+              <th>Esgoto In Natura</th>
+              <th>Dengue (/100k)</th>
+              <th>Falta Creche</th>
+              <th>Sem Fundamental</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Observatório do Complexo do Lins · Rio de Janeiro - RJ | 
+      Plataforma Integrada com 10 Visões Interativas | APIs: COR-Rio, Alerta Rio, Open-Meteo, Central 1746, Fogo Cruzado, Wikifavelas, OSM.
+    </p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="data/lins_data.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
