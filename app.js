@@ -1,7 +1,7 @@
 /**
  * Lógica da Aplicação - Observatório Censitário do Complexo do Lins
- * Suporte a Cálculo de Proximidade Geotécnica por GPS/CEP, Análise de Risco Mais Próximo,
- * Desenho de Linhas de Trajetória até o Risco Crítico e 10 Visões Interativas.
+ * Suporte a PWA Instalável no Celular (Android & iOS), Registro de Service Worker,
+ * Análise Geodésica de Risco por GPS/CEP e 10 Visões Interativas.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let timerInterval = null;
   let secondsRemaining = 600;
 
+  initPWA();
   initTabs();
   initLiveDashboard();
   render24hHistory();
@@ -30,10 +31,41 @@ document.addEventListener('DOMContentLoaded', () => {
   setupEventListeners();
 
   /**
-   * HELPER: CÁLCULO DE DISTÂNCIA HAVERSINE EM METROS
+   * INICIALIZAÇÃO DO REGISTRO PWA & PROMPT DE INSTALAÇÃO NO CELULAR
    */
+  function initPWA() {
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('✅ PWA Service Worker Registrado com sucesso:', reg.scope))
+          .catch(err => console.warn('⚠️ Erro ao registrar Service Worker:', err));
+      });
+    }
+
+    let deferredPrompt;
+    const pwaBtn = document.getElementById('btn-pwa-install');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (pwaBtn) {
+        pwaBtn.style.display = 'inline-flex';
+        pwaBtn.addEventListener('click', () => {
+          pwaBtn.style.display = 'none';
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              showToast('🎉 Aplicativo Instalado com Sucesso na Tela Inicial!');
+            }
+            deferredPrompt = null;
+          });
+        });
+      }
+    });
+  }
+
   function calculateDistanceMeters(lat1, lon1, lat2, lon2) {
-    const R = 6371000; // Raio da Terra em metros
+    const R = 6371000;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -197,9 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3500);
   }
 
-  /**
-   * CONTROLES DE BUSCA POR CEP & CAPTURA DE GPS COM FILTRO DE ANÁLISE DE RISCO MAIS PRÓXIMO
-   */
   function initLocationControls() {
     const btnCep = document.getElementById('btn-cep-search');
     const inputCep = document.getElementById('input-cep-search');
@@ -300,13 +329,9 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 
-  /**
-   * ANÁLISE DE PROXIMIDADE DO RISCO MAIS PRÓXIMO + PLOT NO LEAFLET
-   */
   function processUserLocationWithRiskAnalysis(userCoords, titleText) {
     const [lat, lon] = userCoords;
 
-    // 1. Encontra a pedra instável mais próxima
     let nearestRock = null;
     let minRockDist = Infinity;
     data.blocosRochososInstaveis.forEach(r => {
@@ -317,7 +342,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // 2. Encontra o ponto de inundação mais próximo
     let nearestFlood = null;
     let minFloodDist = Infinity;
     data.pontosInundacaoVias.forEach(f => {
@@ -328,7 +352,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // 3. Encontra o bueiro crítico do 1746 mais próximo
     let nearestBueiro = null;
     let minBueiroDist = Infinity;
     data.bueirosCriticos1746.forEach(b => {
@@ -339,7 +362,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // 4. Identifica o Risco Crítico Mais Próximo absoluto
     const allRisks = [
       { tipo: '🪨 Rocha Instável', obj: nearestRock, dist: minRockDist, cor: '#f87171' },
       { tipo: '🌊 Ponto Inundável', obj: nearestFlood, dist: minFloodDist, cor: '#60a5fa' },
@@ -348,10 +370,8 @@ document.addEventListener('DOMContentLoaded', () => {
     allRisks.sort((a, b) => a.dist - b.dist);
     const topRisk = allRisks[0];
 
-    // Plot do Pino e da Linha Tracejada no Mapa
     plotUserLocationAndDrawRiskLine(userCoords, titleText, topRisk);
 
-    // Exibe Banner Detalhado de Riscos
     const banner = document.getElementById('location-result-banner');
     banner.style.display = 'block';
     banner.style.background = 'rgba(15, 23, 42, 0.95)';
@@ -407,7 +427,6 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `).openPopup();
 
-    // Desenha linha tracejada no mapa ligando a posição do usuário ao risco mais próximo
     if (topRisk.obj && topRisk.obj.coordenadas) {
       riskLinePolyline = L.polyline([coords, topRisk.obj.coordenadas], {
         color: topRisk.cor,
@@ -416,7 +435,6 @@ document.addEventListener('DOMContentLoaded', () => {
         opacity: 0.85
       }).addTo(map);
 
-      // Ajusta os limites do mapa para enquadrar o usuário e o risco
       const bounds = L.latLngBounds([coords, topRisk.obj.coordenadas]);
       map.fitBounds(bounds, { padding: [50, 50] });
     } else {
@@ -1062,7 +1080,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
-    link.setAttribute('download', 'analise_risco_gps_complexo_do_lins.csv');
+    link.setAttribute('download', 'observatorio_pwa_complexo_do_lins.csv');
     link.click();
   }
 });

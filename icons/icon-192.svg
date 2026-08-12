@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#a78bfa" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444" />
+      <stop offset="100%" stop-color="#fb923c" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="100" fill="url(#bgGrad)" />
+  <rect width="492" height="492" x="10" y="10" rx="90" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="4" />
+
+  <!-- Mountain Contour -->
+  <path d="M 90 380 L 220 190 L 290 280 L 370 150 L 440 380 Z" fill="url(#primaryGrad)" opacity="0.35" />
+  <path d="M 60 400 L 200 210 L 280 310 L 350 180 L 460 400 Z" fill="url(#primaryGrad)" opacity="0.8" />
+
+  <!-- Radar Pulse Rings -->
+  <circle cx="256" cy="220" r="70" fill="none" stroke="#34d399" stroke-width="6" opacity="0.6" stroke-dasharray="8,6" />
+  <circle cx="256" cy="220" r="110" fill="none" stroke="#38bdf8" stroke-width="4" opacity="0.4" stroke-dasharray="12,8" />
+
+  <!-- Location GPS Marker Pin -->
+  <path d="M 256 140 C 215 140 182 173 182 214 C 182 270 256 340 256 340 C 256 340 330 270 330 214 C 330 173 297 140 256 140 Z" fill="url(#accentGrad)" />
+  <circle cx="256" cy="214" r="28" fill="#ffffff" />
+
+  <!-- Text Badge -->
+  <text x="256" y="440" font-family="'Outfit', sans-serif" font-weight="800" font-size="40" fill="#f8fafc" text-anchor="middle" letter-spacing="2">LINS GIS</text>
+</svg>

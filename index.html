@@ -2,8 +2,18 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Observatório do Complexo do Lins - 10 Visões e Abas Integradas</title>
+
+  <!-- PWA & Mobile Web App Meta Tags -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Lins GIS">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.svg">
+  <link rel="icon" type="image/svg+xml" href="icons/icon-192.svg">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,6 +38,9 @@
       </div>
     </div>
     <div class="nav-actions">
+      <button class="btn" id="btn-pwa-install" style="background: #8b5cf6; color: #fff; font-weight: 700; display: none;">
+        📱 Instalar App no Celular
+      </button>
       <button class="btn btn-primary" id="btn-manual-refresh" style="background: var(--accent-orange); border-color: var(--accent-orange);">
         🔄 Atualizar APIs Agora
       </button>
@@ -280,7 +293,6 @@
         </div>
       </div>
 
-      <!-- Result Panel of Simulation -->
       <div class="metrics-grid" style="margin-top: 1.25rem;">
         <div class="metric-card" style="border-color: var(--accent-red);">
           <span class="metric-title">Nível de Emergência Estimado</span>
@@ -308,7 +320,6 @@
         </div>
       </div>
 
-      <!-- Dynamic Predictions Lists -->
       <div class="charts-grid" style="margin-top: 1.25rem;">
         <div class="chart-card">
           <h3 class="card-title">🌊 Vias com Risco Crítico de Inundação na Simulação</h3>
@@ -346,7 +357,6 @@
         </div>
       </div>
 
-      <!-- Histórico de Tempestades Extremas -->
       <section class="data-table-card" style="margin-top: 1.5rem;">
         <div class="card-header" style="padding: 0 0 1rem 0; background: transparent;">
           <h3 class="card-title">⛈️ Tabela Histórica de Temporais Extremos no Lins (2010 - 2024)</h3>
@@ -380,7 +390,6 @@
 
       <div class="clusters-grid" id="clusters-container"></div>
 
-      <!-- Pearson Table & Scatter Plots -->
       <section class="data-table-card" style="margin-top: 1.5rem;">
         <div class="card-header" style="padding: 0 0 1rem 0; background: transparent;">
           <h3 class="card-title">📊 Matriz de Correlação Linear de Pearson ($r$)</h3>
@@ -547,7 +556,7 @@
   <footer>
     <p>
       Observatório do Complexo do Lins · Rio de Janeiro - RJ | 
-      Plataforma Integrada com 10 Visões Interativas | APIs: COR-Rio, Alerta Rio, Open-Meteo, Central 1746, Fogo Cruzado, Wikifavelas, OSM.
+      Aplicativo Web Progressivo (PWA Instalável no Celular) | APIs: COR-Rio, Alerta Rio, Open-Meteo, Central 1746, Fogo Cruzado.
     </p>
   </footer>
 
