@@ -1,10 +1,20 @@
 # 🏔️ Observatório de Dados Abertos, Predição Meteorológica & Controle Urbano - Complexo do Lins (Rio de Janeiro - RJ)
 
+**Desenvolvedor Titular:** Augusto Cezar ([@gustocezar](https://github.com/gustocezar))  
+**Licença & Direitos:** Todos os Direitos Reservados © 2026 Augusto Cezar. Proprietary Rights.
+
 Plataforma de inteligência territorial, geoprocessamento GIS e monitoramento preventivo desenvolvida para as **12 comunidades e morros do Complexo do Lins** (Lins de Vasconcelos, XV RA - Méier, AP 3.2, Rio de Janeiro - RJ).
 
 ---
 
-## 🌟 Principais Recursos & Abas Interativas (`http://localhost:3000`)
+## 🌐 Acesso Online & PWA Mobile (4G/5G)
+
+- 📱 **Link do Web App / PWA:** [https://gustocezar.github.io/app-complexo-lins/](https://gustocezar.github.io/app-complexo-lins/)
+- 💻 **Repositório Oficial GitHub:** [https://github.com/gustocezar/app-complexo-lins](https://github.com/gustocezar/app-complexo-lins)
+
+---
+
+## 🌟 Principais Recursos & Abas Interativas
 
 1. **🔴 Painel do Dia (Tempo Real 10min) & 24h:**
    - Leitura de clima ao vivo via **Open-Meteo Weather API** com timer regressivo de 10 minutos e botão `🔄 Atualizar APIs Agora`.
@@ -45,15 +55,12 @@ Plataforma de inteligência territorial, geoprocessamento GIS e monitoramento pr
 
 - 📄 [especificacao_tecnica_observatorio_complexo_lins.md](especificacao_tecnica_observatorio_complexo_lins.md) - Arquitetura de Software & Motores Geodésicos.
 - 💻 [apresentacao_executiva_observatorio_complexo_lins.md](apresentacao_executiva_observatorio_complexo_lins.md) - Apresentação Executiva Slide a Slide.
+- 🛠️ [guia_especificacao_implementacao_desenvolvedor.md](guia_especificacao_implementacao_desenvolvedor.md) - Blueprint & Handover Técnico.
 - 📖 [relatorio_verificacao_atendimento_1746_veracidade_alertas.md](relatorio_verificacao_atendimento_1746_veracidade_alertas.md) - Auditoria de SLA 1746 & Validação de Alertas.
-- 📖 [relatorio_geolocalizacao_cep_gps_complexo_lins.md](relatorio_geolocalizacao_cep_gps_complexo_lins.md) - Geocodificação CEP & GPS HTML5.
-- 📖 [relatorio_significado_clusters_complexo_lins.md](relatorio_significado_clusters_complexo_lins.md) - Nomenclaturas e Diagnóstico dos Clusters K-Means.
 
 ---
 
-## 🚀 Como Executar Localmente
+## ⚖️ Licença & Direitos Autorais
 
-```bash
-python3 -m http.server 3000
-```
-Acesse `http://localhost:3000` no seu navegador.
+Este projeto e seu código-fonte são protegidos por **Direitos Autorais e Propriedade Privada Exclusiva de Augusto Cezar** ([LICENSE](LICENSE)).  
+© 2026 Augusto Cezar. Todos os Direitos Reservados.
