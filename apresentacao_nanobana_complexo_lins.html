@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apresentação Executiva Nanobana - Observatório Complexo do Lins</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: rgba(15, 23, 42, 0.85);
+      --primary: #38bdf8;
+      --secondary: #a78bfa;
+      --accent-green: #34d399;
+      --accent-orange: #fb923c;
+      --accent-red: #f87171;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* Presentation Container */
+    .deck-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .slide {
+      position: absolute;
+      width: 90%;
+      max-width: 1200px;
+      height: 82vh;
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      backdrop-filter: blur(16px);
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.95) translateY(20px);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+    }
+
+    /* Header & Badges */
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px stroke rgba(255, 255, 255, 0.1);
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .slide-tag {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--primary);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .slide-number {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #ffffff 0%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.8rem;
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    p.subtitle {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Grid Layouts inside slides */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .card-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: transform 0.2s ease;
+    }
+
+    .card-box:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+    }
+
+    .card-box h3 {
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 0.4rem;
+    }
+
+    .card-box p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .highlight-val {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent-green);
+      margin: 0.4rem 0;
+    }
+
+    /* Controls Bar */
+    .controls {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 24px;
+      border-radius: 40px;
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+
+    .btn-nav {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-nav:hover {
+      background: var(--primary);
+      color: #0f172a;
+    }
+
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+      z-index: 1000;
+    }
+
+    /* Author Footer */
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px stroke rgba(255, 255, 255, 0.08);
+      padding-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" id="progress"></div>
+
+  <div class="deck-container">
+
+    <!-- SLIDE 1: CAPA DA APRESENTAÇÃO -->
+    <div class="slide active" id="slide-1">
+      <div class="slide-header">
+        <span class="slide-tag">NANOBANA PRESENTATION DECK</span>
+        <span class="slide-number">01 / 07</span>
+      </div>
+      
+      <div style="margin: auto 0;">
+        <h1>Observatório do Complexo do Lins</h1>
+        <p class="subtitle" style="font-size: 1.4rem; max-width: 900px; margin-bottom: 2rem;">
+          Plataforma de Inteligência Territorial, Gestão Preditiva Meteorológica (RainRisk Engine) e Mapeamento GIS em Tempo Real.
+        </p>
+
+        <div class="grid-3" style="margin-top: 1rem;">
+          <div class="card-box" style="border-left: 4px solid var(--primary);">
+            <h3>👨‍💻 Desenvolvedor Titular</h3>
+            <p style="font-size: 1.1rem; color: #fff; font-weight: 700; margin-top: 4px;">Augusto Cezar</p>
+            <p style="font-size: 0.85rem;">Engenheiro de Software & Autor</p>
+          </div>
+
+          <div class="card-box" style="border-left: 4px solid var(--secondary);">
+            <h3>📧 Contato Oficial</h3>
+            <p style="font-size: 1.05rem; color: #fff; font-weight: 700; margin-top: 4px;">gustocezar@gmail.com</p>
+            <p style="font-size: 0.85rem;">Atendimento & Parcerias</p>
+          </div>
+
+          <div class="card-box" style="border-left: 4px solid var(--accent-green);">
+            <h3>🌐 Repositório & App PWA</h3>
+            <p style="font-size: 0.85rem; color: var(--accent-green); font-weight: 700; margin-top: 4px;">github.com/gustocezar/app-complexo-lins</p>
+            <p style="font-size: 0.85rem;">PWA Ativo no GitHub Pages</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>© 2026 Augusto Cezar (gustocezar@gmail.com) · Todos os Direitos Reservados</span>
+        <span>Complexo do Lins - Rio de Janeiro / RJ</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: O DESAFIO TERRITORIAL -->
+    <div class="slide" id="slide-2">
+      <div class="slide-header">
+        <span class="slide-tag">01. DIAGNÓSTICO URBANO</span>
+        <span class="slide-number">02 / 07</span>
+      </div>
+
+      <h2>O Desafio Socioambiental do Lins</h2>
+      <p class="subtitle">12 comunidades e morros com alta declividade, vulnerabilidade sanitária e riscos geotécnicos recorrentes.</p>
+
+      <div class="grid-4" style="margin-top: 1.5rem;">
+        <div class="card-box">
+          <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--primary);">População Censo 2022</span>
+          <div class="highlight-val">34.850</div>
+          <p>Moradores distribuídos nos 12 morros do complexo.</p>
+        </div>
+
+        <div class="card-box">
+          <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent-red);">Risco Geotécnico</span>
+          <div class="highlight-val" style="color: var(--accent-red);">24,6%</div>
+          <p>Domicílios expostos a blocos rochosos instáveis.</p>
+        </div>
+
+        <div class="card-box">
+          <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent-orange);">Esgoto In Natura</span>
+          <div class="highlight-val" style="color: var(--accent-orange);">37,9%</div>
+          <p>Residências sem esgotamento sanitário formal.</p>
+        </div>
+
+        <div class="card-box">
+          <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--secondary);">Incidência Dengue</span>
+          <div class="highlight-val" style="color: var(--secondary);">650</div>
+          <p>Casos por 100 mil hab. nos picos sazonais.</p>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Fonte: Censos IBGE (2000-2022), Geo-Rio e Data.Rio</span>
+        <span>Augusto Cezar · gustocezar@gmail.com</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: ARQUITETURA EM 10 VISÕES -->
+    <div class="slide" id="slide-3">
+      <div class="slide-header">
+        <span class="slide-tag">02. ESTRUTURA DO SOFTWARE</span>
+        <span class="slide-number">03 / 07</span>
+      </div>
+
+      <h2>Arquitetura Integrada em 10 Visões</h2>
+      <p class="subtitle">Uma plataforma única (Single Page Application) cobrindo todos os eixos de gestão pública.</p>
+
+      <div class="grid-2" style="margin-top: 1rem;">
+        <div class="card-box">
+          <h3>🔴 1. Painel do Dia & 24h</h3>
+          <p>Polling real-time de 10 min (Open-Meteo), Alerta Rio e histórico auditável das últimas 24 horas com SLA do 1746.</p>
+        </div>
+
+        <div class="card-box">
+          <h3>🗺️ 2. Mapa GIS, CEP & GPS</h3>
+          <p>Geolocalização via ViaCEP e GPS do celular com cálculo Haversine de distância até o risco mais próximo.</p>
+        </div>
+
+        <div class="card-box">
+          <h3>🚦 3. Sala de Situação (7/15/30d)</h3>
+          <p>Planejamento estratégico de horizontes operacionais para a Defesa Civil, Comlurb e Rio-Águas.</p>
+        </div>
+
+        <div class="card-box">
+          <h3>🔮 4. Simulador RainRisk</h3>
+          <p>Algoritmo preditivo de demanda do 1746 (alagamentos, deslizamentos e bueiros) baseado em chuva horária e acumulado.</p>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Desenvolvido por Augusto Cezar</span>
+        <span>gustocezar@gmail.com</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: MOTOR PREDITIVO RAINRISK & HAVERSINE -->
+    <div class="slide" id="slide-4">
+      <div class="slide-header">
+        <span class="slide-tag">03. INOVAÇÃO TECNOLÓGICA</span>
+        <span class="slide-number">04 / 07</span>
+      </div>
+
+      <h2>Motores Preditivos & Geodésicos</h2>
+      <p class="subtitle">Inteligência de dados aplicada à prevenção de desastres naturais.</p>
+
+      <div class="grid-2" style="margin-top: 1rem;">
+        <div class="card-box" style="border-top: 4px solid var(--primary);">
+          <h3>🌧️ Algoritmo RainRisk (Previsão 1746)</h3>
+          <p style="margin-top: 0.5rem; font-family: monospace; color: var(--primary);">
+            N_alagamentos = round(4 + 6.5*(P_h/10) + 8.0*(P_24h/40))<br>
+            N_deslizamentos = round(1 + 3.5*(P_24h/40)^1.8)<br>
+            N_bueiros = round(6 + 4.2*(P_h/10))
+          </p>
+          <p style="margin-top: 0.6rem; font-size: 0.85rem;">Calcula instantaneamente o volume de chamados da Central 1746 por categoria.</p>
+        </div>
+
+        <div class="card-box" style="border-top: 4px solid var(--accent-green);">
+          <h3>📐 Motor Geodésico Haversine (GPS / CEP)</h3>
+          <p style="margin-top: 0.5rem; font-family: monospace; color: var(--accent-green);">
+            d = 2 * R * asin(sqrt(sin²(Δφ/2) + cos(φ1)*cos(φ2)*sin²(Δλ/2)))
+          </p>
+          <p style="margin-top: 0.6rem; font-size: 0.85rem;">Calcula a distância exata em metros da posição GPS do morador até a rocha instável mais próxima e desenha o vetor tracejado no Leaflet.</p>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Modelos Matemáticos Proprietários</span>
+        <span>Augusto Cezar · gustocezar@gmail.com</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: CLUSTERS K-MEANS -->
+    <div class="slide" id="slide-5">
+      <div class="slide-header">
+        <span class="slide-tag">04. ANÁLISE ESPACIAL</span>
+        <span class="slide-number">05 / 07</span>
+      </div>
+
+      <h2>Agrupamentos K-Means ($k=3$) Descritivos</h2>
+      <p class="subtitle">Classificação socioespacial das 12 comunidades baseada em vulnerabilidade geotécnica e infraestrutura.</p>
+
+      <div class="grid-3" style="margin-top: 1rem;">
+        <div class="card-box" style="border-left: 5px solid var(--accent-red);">
+          <h3 style="color: var(--accent-red);">🔴 Cluster 1</h3>
+          <p style="font-weight: 700; color: #fff; font-size: 0.95rem; margin: 4px 0;">Morros de Alta Vulnerabilidade Sanitária & Geotécnica</p>
+          <p style="font-size: 0.85rem;">Morro do Cotia, Dona Francisca, Gambá, Santa Terezinha. Topo de morro, esgoto 49%, picos de Dengue.</p>
+        </div>
+
+        <div class="card-box" style="border-left: 5px solid var(--accent-orange);">
+          <h3 style="color: var(--accent-orange);">🟧 Cluster 2</h3>
+          <p style="font-weight: 700; color: #fff; font-size: 0.95rem; margin: 4px 0;">Encostas de Adensamento Populacional & Risco Moderado</p>
+          <p style="font-size: 0.85rem;">Cachoeira Grande, Morro do Amor, Barro Vermelho, Cachoeirinha. Encostas densas, saneamento intermediário.</p>
+        </div>
+
+        <div class="card-box" style="border-left: 5px solid var(--accent-green);">
+          <h3 style="color: var(--accent-green);">🟢 Cluster 3</h3>
+          <p style="font-weight: 700; color: #fff; font-size: 0.95rem; margin: 4px 0;">Áreas de Sopé com Maior Integração Urbana</p>
+          <p style="font-size: 0.85rem;">Boca do Mato, Barro Preto, N. Sra. da Guia, Vila Cabuçu. Sopé, renda > 1.5 salários, 73% saneamento.</p>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Agrupamento Multivariado K-Means</span>
+        <span>Augusto Cezar · gustocezar@gmail.com</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: PWA MOBILE -->
+    <div class="slide" id="slide-6">
+      <div class="slide-header">
+        <span class="slide-tag">05. APLICATIVO MOBILE</span>
+        <span class="slide-number">06 / 07</span>
+      </div>
+
+      <h2>PWA Instalável no Celular (Android & iOS)</h2>
+      <p class="subtitle">Acesso rápido em tela cheia com funcionamento offline e ícone na tela inicial.</p>
+
+      <div class="grid-2" style="margin-top: 1rem;">
+        <div class="card-box">
+          <h3>📱 Recursos PWA Implementados</h3>
+          <ul style="margin-top: 0.5rem; padding-left: 1.2rem; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+            <li><strong>Service Worker (<code style="color: var(--primary);">sw.js</code>):</strong> Caching inteligente de mapas e dados para uso offline nos morros.</li>
+            <li><strong>Manifesto Nativo (<code style="color: var(--primary);">manifest.json</code>):</strong> Suporte a modo Standalone sem barra de navegador.</li>
+            <li><strong>Prompt de Instalação:</strong> Botão automático <code style="color: var(--secondary);">📱 Instalar App no Celular</code>.</li>
+          </ul>
+        </div>
+
+        <div class="card-box" style="background: rgba(56, 189, 248, 0.08); border-color: var(--primary);">
+          <h3>🌐 Link de Acesso Público (4G/5G)</h3>
+          <p style="margin-top: 0.5rem; font-size: 1.1rem; font-weight: 700; color: var(--primary);">
+            gustocezar.github.io/app-complexo-lins/
+          </p>
+          <p style="margin-top: 0.8rem; font-size: 0.85rem;">Publicado e hospedado gratuitamente via GitHub Pages com certificado HTTPS de segurança.</p>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Progressive Web App Standard</span>
+        <span>Augusto Cezar · gustocezar@gmail.com</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: CONTATO E DIREITOS -->
+    <div class="slide" id="slide-7">
+      <div class="slide-header">
+        <span class="slide-tag">06. ENCERRAMENTO & PROPRIEDADE</span>
+        <span class="slide-number">07 / 07</span>
+      </div>
+
+      <h2>Contato & Direitos de Autoria</h2>
+      <p class="subtitle">Projeto desenvolvido com exclusividade e direitos reservados.</p>
+
+      <div class="grid-2" style="margin-top: 1.5rem;">
+        <div class="card-box" style="border-left: 5px solid var(--primary);">
+          <h3>👨‍💻 Desenvolvedor Titular</h3>
+          <p style="font-size: 1.3rem; font-weight: 800; color: #fff; margin-top: 4px;">Augusto Cezar</p>
+          <p style="margin-top: 0.5rem;"><strong>Email:</strong> gustocezar@gmail.com</p>
+          <p><strong>GitHub:</strong> github.com/gustocezar</p>
+        </div>
+
+        <div class="card-box" style="border-left: 5px solid var(--secondary);">
+          <h3>⚖️ Termos de Licença</h3>
+          <p style="font-size: 0.9rem; margin-top: 4px;">
+            Este software é de propriedade privada e exclusiva de <strong>Augusto Cezar</strong>. Todos os Direitos Reservados © 2026.
+          </p>
+          <p style="font-size: 0.85rem; margin-top: 0.5rem;">Atribuição de autoria obrigatória para citações técnicas e acadêmicas.</p>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Obrigado! · Contato: gustocezar@gmail.com</span>
+        <span>Rio de Janeiro - RJ | 2026</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Slide Controls -->
+  <div class="controls">
+    <button class="btn-nav" id="btn-prev">◀ Anterior</button>
+    <span id="slide-counter" style="font-weight: 700; font-size: 0.9rem; color: var(--primary);">1 / 7</span>
+    <button class="btn-nav" id="btn-next">Próximo ▶</button>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const counter = document.getElementById('slide-counter');
+    const progressBar = document.getElementById('progress');
+
+    function updateSlide(index) {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx === index);
+      });
+      counter.textContent = `${index + 1} / ${totalSlides}`;
+      progressBar.style.width = `${((index + 1) / totalSlides) * 100}%`;
+    }
+
+    document.getElementById('btn-next').addEventListener('click', () => {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateSlide(currentSlide);
+      }
+    });
+
+    document.getElementById('btn-prev').addEventListener('click', () => {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide(currentSlide);
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        if (currentSlide < totalSlides - 1) {
+          currentSlide++;
+          updateSlide(currentSlide);
+        }
+      } else if (e.key === 'ArrowLeft') {
+        if (currentSlide > 0) {
+          currentSlide--;
+          updateSlide(currentSlide);
+        }
+      }
+    });
+
+    updateSlide(0);
+  </script>
+</body>
+</html>
