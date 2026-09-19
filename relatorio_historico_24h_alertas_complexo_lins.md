@@ -12,7 +12,7 @@
 | :--- | :--- | :--- | :---: | :---: |
 | **00:45** | **Alerta Rio (GEO-RIO)** | Leitura de 4.2mm de acumulado na última hora. Sem risco geotécnico nas encostas da Cotia. | Geo-Rio / Defesa Civil | 🟢 Normal |
 | **22:30 (Ontem)** | **COR-Rio** | Retorno da cidade ao **Estágio 1 (Normal)**. Trânsito desobstruído na R. Lins de Vasconcelos. | COR-Rio | 🟢 Normal |
-| **19:15 (Ontem)** | **Central 1746** | Chamado #891240: Raspagem de bueiro entupido por descarte de lixo na R. Dona Francisca, 140. | Comlurb | 🟡 Em Atendimento |
+| **19:15 (Ontem)** | **Central 1746** | Chamado #891240: Raspagem de bueiro entupido por descarte de lixo na área da Rua Dona Francisca, no Complexo do Lins. | Comlurb | 🟡 Em Atendimento |
 | **16:40 (Ontem)** | **Rio-Águas** | Inspeção do Rio Cabuçu: Lâmina de água normal (0.45m). Calha desobstruída. | Rio-Águas | 🟢 Normal |
 | **14:10 (Ontem)** | **Fogo Cruzado** | Notificação de disparos de arma de fogo no topo do Morro da Cotia. Sem vítimas. | 25ª DP / 3ª UPP | 🔴 Notificado |
 | **10:20 (Ontem)** | **Central 1746 (Rioluz)** | Chamado #890982: Concluída a substituição de 3 luminárias apagadas no Morro do Amor. | Rioluz | ✅ Concluído |

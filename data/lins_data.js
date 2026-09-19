@@ -67,7 +67,7 @@ const COMPLEXO_LINS_DATA = {
       categoria: "Central 1746 (Drenagem)",
       icone: "🕳️",
       titulo: "Chamado #891240 - Desobstrução de Grelha",
-      descricao: "Morador abriu solicitação de raspagem de bueiro entupido na Rua Dona Francisca, 140.",
+      descricao: "Morador abriu solicitação de raspagem de bueiro entupido na área da Rua Dona Francisca, no Complexo do Lins.",
       orgao: "Central 1746 / Comlurb",
       tipoBadge: "badge-orange",
       statusChamado: "🟡 ATENDIMENTO EM ANDAMENTO (No Prazo SLA)",
