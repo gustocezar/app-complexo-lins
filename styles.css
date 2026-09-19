@@ -129,6 +129,23 @@ body {
   box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4);
 }
 
+.privacy-inline-note {
+  margin-top: 0.8rem;
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  background: rgba(15, 23, 42, 0.58);
+  border-left: 3px solid var(--accent-green);
+  border-radius: 0 8px 8px 0;
+  padding: 0.65rem 0.8rem;
+}
+
+.privacy-inline-note a {
+  color: var(--primary);
+  text-decoration: underline;
+  font-weight: 600;
+}
+
 /* Tabs Navigation */
 .tabs-nav {
   display: flex;

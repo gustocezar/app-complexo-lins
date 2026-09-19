@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <span style="font-size: 0.75rem; color: #94a3b8;">Hoje às 08:45</span>
           </div>
           <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 4px;">
-            <strong>Local:</strong> R. Dona Francisca, 140 · <strong>Subcategoria:</strong> Grelha Danificada / Bueiro Obstruído.
+            <strong>Local aproximado:</strong> área da Rua Dona Francisca, no Complexo do Lins · <strong>Subcategoria:</strong> Grelha Danificada / Bueiro Obstruído.
           </p>
         </div>
       `;
